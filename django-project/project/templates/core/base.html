@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <style>
+    a {
+      text-decoration: none;
+      color: black;
+      padding: .2rem .6rem;
+      border-radius: 2rem;
+      background-color: lightgray;
+      transition: background-color .3s ease-in-out;
+    }
+    .f:hover {
+      background-color: lightgreen;
+    }
+    .s:hover {
+      background-color: lightblue;
+    }
+    </style>
+  </head>
+  <body>
+    <nav style="display: flex; width: 100%; gap: 1rem; padding: .4rem .4rem .8rem .4rem; border-bottom: dashed 4px black;">
+      <div style="display: flex; gap: .6rem; width: 100%;">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="/admin">Admin</a>
+      </div>
+      <div style="display: flex; width: 100%; gap: 1rem; align-items:center;">
+        <div style="font-weight: bold;">Real Time:</div>
+        <a class="f" href="{% url 'real-data' %}">Real Data</a>
+        <a class="s" href="{% url 'test-data' %}">Test Data</a>
+      </div>
+    </nav>
+
+    {% block content %} {% endblock %}
+    
+    {% block script %}{% endblock %}
+  </body>
+</html>

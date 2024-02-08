@@ -1,0 +1,92 @@
+{% extends './base.html' %}
+
+{% load static %}
+
+{% block title %}REAL DATA{% endblock %}
+
+{% block head %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+  window.onload = function () {
+    // Initial Values
+    let xValue = 0;
+    let yValue = 10;
+    let newDataCount = 6;
+    dataPoints = [];
+    let updateTime = 10;
+
+
+    let chart = new CanvasJS.Chart("chartContainer", {
+      theme: "light",
+      exportEnabled: true,
+      title: {
+        text: "BTC-USD Price Chart (Real data)",
+      },
+      data: [
+        {
+          type: "spline",
+          dataPoints: dataPoints,
+        },
+      ],
+    });
+
+    updateData();
+    startUpdateTimer();
+
+    function addData(data) {
+      if (newDataCount !== 1) {
+        $.each(data, function (key, value) {
+          dataPoints.push({ x: value.x, y: parseFloat(value.y) });
+          xValue++;
+          yValue = parseFloat(value.y);
+        });
+        newDataCount = 1;
+      } else {
+        //dataPoints.shift();
+        dataPoints.push({ x: data[0].x, y: parseFloat(data[0].y) });
+        xValue++;
+        yValue = parseFloat(data[0].y);
+      }
+      chart.render();
+      setTimeout(updateData, updateTime * 1000);
+    }
+
+    function updateData() {
+      $.getJSON(
+        "/get_datapoints?xstart=" +
+          xValue +
+          "&ystart=" +
+          yValue +
+          "&length=" +
+          newDataCount,
+        addData
+      );
+    }
+
+    function startUpdateTimer() {
+      let time = updateTime;
+      let willUpdateIn = document.getElementById("willUpdateIn");
+
+      setInterval(function () {
+        time--;
+        willUpdateIn.innerHTML = time;
+        if (time === 0) {
+          time = updateTime+1;
+        }
+      }, 1000);
+    }
+  };
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="chartContainer" style="height: 360px; width: 100%"></div>
+
+<div style="padding: 1rem 0rem;" for="willUpdateIn">Will update in <span id="willUpdateIn" style="font-weight: bold;">10</span> seconds</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="{% static 'canvasjs.min.js' %}"></script>
+{% endblock %}

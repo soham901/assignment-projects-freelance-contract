@@ -1,0 +1,73 @@
+{% extends './base.html' %}
+
+{% load static %}
+
+{% block title %}TEST DATA{% endblock %}
+
+{% block head %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+  window.onload = function () {
+    // Initial Values
+    var xValue = 0;
+    var yValue = 10;
+    var newDataCount = 6;
+    dataPoints = [];
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+      theme: "light",
+      exportEnabled: true,
+      title: {
+        text: "BTC-USD Price Chart (Test data)",
+      },
+      data: [
+        {
+          type: "spline",
+          dataPoints: dataPoints,
+        },
+      ],
+    });
+
+    updateData();
+
+    function addData(data) {
+      if (newDataCount !== 1) {
+        $.each(data, function (key, value) {
+          dataPoints.push({ x: value.x, y: parseFloat(value.y) });
+          xValue++;
+          yValue = parseFloat(value.y);
+        });
+        newDataCount = 1;
+      } else {
+        //dataPoints.shift();
+        dataPoints.push({ x: data[0].x, y: parseFloat(data[0].y) });
+        xValue++;
+        yValue = parseFloat(data[0].y);
+      }
+      chart.render();
+      setTimeout(updateData, 3000);
+    }
+
+    function updateData() {
+      $.getJSON(
+        "/get_datapoints_test?xstart=" +
+          xValue +
+          "&ystart=" +
+          yValue +
+          "&length=" +
+          newDataCount,
+        addData
+      );
+    }
+  };
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="chartContainer" style="height: 360px; width: 100%"></div>
+{% endblock %}
+
+{% block script %}
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="{% static 'canvasjs.min.js' %}"></script>
+{% endblock %}
