@@ -1,4 +1,4 @@
-# Django API Python Expert (django, API, Python, JavaScript, Docker)
+# 1. Django API Python Expert (django, API, Python, JavaScript, Docker)
 
 [click here to go the project directory](/django-project/)
 
@@ -15,7 +15,7 @@
 <br />
 <br />
 
-# FastAPI FullStack Expert (FastAPI, Docker JavaScript, NodeJs)
+# 2. FastAPI FullStack Expert (FastAPI, Docker JavaScript, NodeJs)
 
 [click here to go the project directory](/fastapi-project/)
 
@@ -31,7 +31,7 @@
 <br />
 <br />
 
-# TypeScript Js Python Expert
+# 3. TypeScript Js Python Expert
 
 [click here to go the project directory](/typescript-project/)
 
