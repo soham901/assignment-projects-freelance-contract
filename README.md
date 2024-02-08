@@ -1,6 +1,6 @@
 # 1. Django API Python Expert (django, API, Python, JavaScript, Docker)
 
-[click here to go the project directory](/django-project/)
+[click here to go the project directory](/1.django-project/)
 
 ### Tests:
 
@@ -17,7 +17,7 @@
 
 # 2. FastAPI FullStack Expert (FastAPI, Docker JavaScript, NodeJs)
 
-[click here to go the project directory](/fastapi-project/)
+[click here to go the project directory](/2.fastapi-project/)
 
 ### Tests:
 
@@ -33,7 +33,7 @@
 
 # 3. TypeScript Js Python Expert
 
-[click here to go the project directory](/typescript-project/)
+[click here to go the project directory](/3.typescript-project/)
 
 ### Tests:
 
