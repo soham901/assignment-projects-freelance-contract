@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Leads</h1>
+    <button hx-get="/leads" hx-target="#leads">Get Leads</button>
+    <div id="leads"></div>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <script>
+      // function handler
+    </script>
+
+    <!-- <script>
+      async function getData() {
+        const response = await fetch("/leads");
+        const data = await response.json();
+        console.log(data);
+
+        const table = document.createElement("table");
+        table.setAttribute("border", "1");
+        const thead = document.createElement("thead");
+        const tbody = document.createElement("tbody");
+
+        const theadRow = document.createElement("tr");
+        const th1 = document.createElement("th");
+        th1.textContent = "ID";
+        const th2 = document.createElement("th");
+        th2.textContent = "First Name";
+        const th3 = document.createElement("th");
+        th3.textContent = "Last Name";
+        const th4 = document.createElement("th");
+        th4.textContent = "Phone Work";
+
+        theadRow.appendChild(th1);
+        theadRow.appendChild(th2);
+        theadRow.appendChild(th3);
+        theadRow.appendChild(th4);
+        thead.appendChild(theadRow);
+
+        data.forEach((lead) => {
+          const tr = document.createElement("tr");
+          const td1 = document.createElement("td");
+          td1.textContent = lead.id;
+
+          const td2 = document.createElement("td");
+          td2.textContent = lead.first_name;
+          td2.setAttribute("hx-get", `/lead/${lead.id}/edit`);
+          td2.setAttribute("hx-trigger", "click");
+          td2.setAttribute("hx-target", "this");
+          td2.setAttribute("hx-swap", "outerHTML");
+
+          const td3 = document.createElement("td");
+          td3.textContent = lead.last_name;
+
+          const td4 = document.createElement("td");
+          td4.textContent = lead.phone_work;
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tr.appendChild(td4);
+          tbody.appendChild(tr);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        document.body.appendChild(table);
+      }
+
+      getData();
+    </script> -->
+  </body>
+</html>
