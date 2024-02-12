@@ -14,93 +14,82 @@ app.use(express.static('public'));
 
 // TODO: Seperate routes into their own files
 app.get('/leads', async (req, res) => {
-    const leads = await Lead.find();
-
-    // send the leads but with html table
-    res.send(`
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone Work</th>
-            <th>Action</th>
-        </tr>
-        ${leads.map(lead => `
-            <tr id="lead-${lead.id}">
-                <td>${lead.id}</td>
-                <td>${lead.first_name}</td>
-                <td>${lead.last_name}</td>
-                <td>${lead.phone_work}</td>
-                <td
-                hx-get="/lead/${lead.id}/edit"
-                hx-trigger="click"
-                hx-swap="innerHTML"
-                hx-target="#lead-${lead.id}"
-                style="background-color: blue; color: white;"
-                >
-                    Edit
-                </td>
-            </tr>
-        `).join('')}
-    </table>
-    `);
+    try {
+        const leads = await Lead.find();
+        res.send(leads);
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 
-app.get('/lead/:id/edit', async (req, res) => {
+app.put('/leads', async (req, res) => {
+    try {
+        const { id, first_name, last_name, phone_work } = req.body;
 
-    const lead = await Lead.findOne({ id: req.params.id });
+        if (!id) {
+            return res.status(400).json({ message: 'ID is required' });
+        }
 
+        const lead = await Lead.findOne({ id });
 
-    res.send(`
-                <td>${lead.id}</td>
-                <td contenteditable onblur="handleBlur('first_name')">${lead.first_name}</td>
-                <td contenteditable onblur="handleBlur('last_name')">${lead.last_name}</td>
-                <td contenteditable onblur="handleBlur('phone_work')">${lead.phone_work}</td>
-                <td
-                hx-get="/lead/${lead.id}/save"
-                hx-trigger="click"
-                hx-swap="innerHTML"
-                hx-target="#lead-${lead.id}"
-                style="background-color: green; color: white;"
-                >
-                    Save
-                </td>
-    `);
+        if (!lead) {
+            return res.status(404).json({ message: 'Lead not found' });
+        }
+
+        // TODO: Add validation
+        lead.first_name = first_name || lead.first_name;
+        lead.last_name = last_name || lead.last_name;
+        lead.phone_work = phone_work || lead.phone_work;
+
+        await lead.save();
+
+        res.send(lead);
+    }
+
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 
-app.get('/lead/:id/save', async (req, res) => {
-    const lead = await Lead.findOne({ id: req.params.id });
-    console.log(lead);
-    res.send(`
-                <td>${lead.id}</td>
-                <td>${lead.first_name}</td>
-                <td>${lead.last_name}</td>
-                <td>${lead.phone_work}</td>
-                <td
-                hx-get="/lead/${lead.id}/edit"
-                hx-trigger="click"
-                hx-swap="innerHTML"
-                hx-target="#lead-${lead.id}"
-                style="background-color: blue; color: white;"
-                >
-                    Edit
-                </td>
 
-    `);
-});
+app.delete('/leads', async (req, res) => {
+    try {
 
+        console.log('req.body', req.body);
 
-app.post("/lead/:id/edit", async (req, res) => {
-    const lead = await Lead.findById(req.params.id);
-    const { first_name, last_name, phone_work } = req.body;
-    lead.first_name = first_name || lead.first_name;
-    lead.last_name = last_name || lead.last_name;
-    lead.phone_work = phone_work || lead.phone_work;
-    await lead.save();
-    res.send(lead);
+        const { id } = req.body;
+
+        console.log('id', id);
+
+        if (!id) {
+            return res.status(400).json({ message: 'ID is required' });
+        }
+
+        const lead = await Lead.findOneAndDelete({ id });
+
+        console.log('lead', lead);
+
+        if (!lead) {
+            return res.status(404).json({ message: 'Lead not found' });
+        }
+
+        // const lead = await Lead.findOne({ id: req.params.id });
+
+        // if (!lead) {
+        //     return res.status(404).json({ message: 'Lead not found' });
+        // }
+
+        // await lead.remove();
+
+        res.json({ message: 'Lead removed' });
+    }
+
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 
