@@ -1,17 +1,3 @@
-# Prefect Flow
-from prefect import task, flow
-
-# Database
-from sqlalchemy import Column, String, create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
-
-engine = create_engine("sqlite:///leads.db", echo=True)
-Session = sessionmaker(bind=engine)
-session = Session()
-
-class Base(DeclarativeBase):
-    pass
-
 # API Client
 import requests
 import json
@@ -34,18 +20,21 @@ if not all([URL, USERNAME, PASSWORD]):
 
 
 
-# Models
-class Lead(Base):
-    __tablename__ = "leads"
+def transform_leads_data(data):
+    return [
+        {
+            "id": lead["id"],
+            "first_name": lead["name_value_list"]["first_name"]["value"],
+            "last_name": lead["name_value_list"]["last_name"]["value"],
+            "phone_work": lead["name_value_list"]["phone_work"]["value"],
+        }
+        for lead in data["entry_list"]
+    ]
 
-    id = Column(String, primary_key=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    phone_work = Column(String)
 
 
-@flow
-def get_leads_data(limit=20):
+
+def get_leads_from_api(limit=20):
     # Authentication
     user_auth = {
         "user_name": USERNAME,
@@ -87,43 +76,4 @@ def get_leads_data(limit=20):
     response = requests.post(URL, data=data)
     response.raise_for_status()
 
-    return response.json()
-
-
-
-@flow
-def transform_leads_data(data):
-    return [
-        {
-            "id": lead["id"],
-            "first_name": lead["name_value_list"]["first_name"]["value"],
-            "last_name": lead["name_value_list"]["last_name"]["value"],
-            "phone_work": lead["name_value_list"]["phone_work"]["value"],
-        }
-        for lead in data["entry_list"]
-    ]
-
-
-
-@flow
-def save_leads_data(data):
-    Base.metadata.create_all(engine)
-    if session.query(Lead).count() > 0:
-        session.query(Lead).delete()
-    for lead in data:
-        session.add(Lead(**lead))
-    session.commit()
-
-
-@flow()
-def main():
-    leads_data = get_leads_data()
-    transformed_leads_data = transform_leads_data(leads_data)
-    save_leads_data(transformed_leads_data)
-
-
-if __name__ == "__main__":
-    main.serve(
-        name="SuiteCRM Leads",
-        cron="0 0 * * *",
-    )
+    return transform_leads_data(response.json())
