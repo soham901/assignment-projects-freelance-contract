@@ -34,7 +34,7 @@ def transform_leads_data(data):
 
 
 
-def get_leads_from_api(limit=20):
+def get_leads_from_api(limit=200):
     # Authentication
     user_auth = {
         "user_name": USERNAME,

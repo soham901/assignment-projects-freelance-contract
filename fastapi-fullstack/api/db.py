@@ -30,7 +30,7 @@ collection = db[DB_COLLECTION]
 print("Connected to DB :::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
 
-def get_leads_from_api(limit=20):
+def get_leads_from_api(limit=200):
     # Authentication
     user_auth = {
         "user_name": USERNAME,

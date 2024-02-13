@@ -6,12 +6,12 @@ connection = pymysql.connect(
   charset="utf8mb4",
   connect_timeout=timeout,
   cursorclass=pymysql.cursors.DictCursor,
-  db="defaultdb",
-  host="mysql-29c7d902-sandip-169.a.aivencloud.com",
-  password="AVNS_mUrVl8TMxZSSXnNPAuq",
+  db="mydb",#"defaultdb",
+  host="localhost",#"mysql-29c7d902-sandip-169.a.aivencloud.com",
+  password="root",#"AVNS_mUrVl8TMxZSSXnNPAuq",
   read_timeout=timeout,
-  port=13251,
-  user="avnadmin",
+  port=3306,#13251,
+  user="root",#"avnadmin",
   write_timeout=timeout,
 )
 

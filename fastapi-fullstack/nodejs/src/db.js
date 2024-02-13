@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/demo-db'
+const MONGO_URL = "mongodb://127.0.0.1:27018/laxicon-fastapi" //process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/demo-db'
 
 export const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(MONGO_URI);
+        const conn = await mongoose.connect(MONGO_URL);
 
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {

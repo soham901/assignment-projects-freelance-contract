@@ -5,6 +5,8 @@ import express from 'express';
 
 const app = express();
 
+console.log("SERVER STARTED");
+
 connectDB();
 
 app.use(express.json());
