@@ -7,7 +7,7 @@
 **Description:**
 A Django-based web application that displays stock data fetched from an API (Coinbase API for BTC-USD) and stores it using Django models. Provides visualization of stock trends with basic statistical analysis.
 
-[![Showcase Video](https://img.youtube.com/vi/t6BxBQcx-BU/0.jpg)](https://www.youtube.com/watch?v=t6BxBQcx-BU)
+[Showcase Video](https://www.youtube.com/watch?v=t6BxBQcx-BU)
 
 ### Project 2: FastAPI Prefect Integration for Leads Sync
 
